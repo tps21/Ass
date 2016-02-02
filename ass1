@@ -1,0 +1,167 @@
+import java.io.*;
+import java.util.*;
+
+public class Store
+{
+	public static void main(String []args)
+	{
+		//variables
+		Scanner scanner = new Scanner(System.in);
+		int answer;
+		int bookmarks = 0;
+		int paintings = 0;
+		int choice = 0;
+		int book = 0;	
+		int customer = 0;
+		double subtotal = 0, total = 0, bookTotal = 0, bookmarkTotal = 0, paintingTotal = 0;
+		double SALESTAX = 1.07, DISCOUNT = 0.00;
+		
+		//introduction to enter program or exit immediately
+		System.out.println("Welcome!");
+		
+		//loop does a check to get the correct input
+		do
+		{
+			System.out.print("Any customers in line? (1 = Yes, 2 = No) ");
+			System.out.print("");
+			answer = scanner.nextInt();
+		}while (answer !=1 && answer !=2);
+		
+		//gives customer number for discount
+		customer++;
+			
+		//main program while loop
+		while(answer !=2)
+		{
+			//shows menu
+			System.out.println();
+			System.out.println("1 - Buy Books - $5.00 each");
+			System.out.println("2 - Buy Bookmarks - $1.00 each, $5.00 for a six-pack");
+			System.out.println("3 - Buy Paintings of Books - $100.00 each");
+			System.out.println("4 - See current order");
+			System.out.println("5 - Checkout");
+			System.out.print("Please enter a valid option (1 through 5) > ");
+			choice = scanner.nextInt();
+				
+			//switch cases for each decision to be made	
+			switch(choice)
+			{
+				//buying books
+    			case 1:
+    				System.out.print("How many Books would you like? ");
+    				System.out.println();
+    				int buyBooks = scanner.nextInt();
+       				book += buyBooks;
+       				bookTotal = (book * 5.00);
+       				subtotal = bookTotal + bookmarkTotal + paintingTotal;
+       				total = subtotal * SALESTAX;
+       				System.out.print("Books bought: " + book);
+       				System.out.printf("\nSubtotal spent $%.2f\n", subtotal);
+       				System.out.printf("Total spent $%.2f\n", total);
+       				System.out.println();
+       				break; 
+    			
+    			//buying bookmarks	
+    			case 2:
+       				System.out.print("How many Bookmarks would you like? ");
+    				System.out.println();
+    				int buyMarks = scanner.nextInt();
+       				bookmarks += buyMarks;
+       				bookmarkTotal = (bookmarks % 6 * 1.00) + (bookmarks / 6 * 5.00);
+       				subtotal = bookTotal + bookmarkTotal + paintingTotal;
+       				total = subtotal * SALESTAX;
+       				System.out.println("Bookmarks bought: " + bookmarks);
+       				System.out.printf("Subtotal spent $%.2f\n", subtotal);
+       				System.out.printf("Total spent $%.2f\n", total);
+       				System.out.println();
+       				break;
+    				
+    			//buying paintings
+    			case 3:
+       				System.out.print("How many Paintings would you like? ");
+    				System.out.println();
+    				int buyPaintings = scanner.nextInt();
+       				paintings += buyPaintings;
+       				paintingTotal = (paintings * 100);
+       				subtotal = bookTotal + bookmarkTotal + paintingTotal;
+       				total = subtotal * SALESTAX;
+       				System.out.println("Paintings bought: " + paintings);
+       				System.out.printf("Subtotal spent $%.2f\n", subtotal);
+       				System.out.printf("Total spent $%.2f\n", total);
+       				System.out.println();
+       				break; 
+       				
+       			//shows shopping cart
+    			case 4:
+    				System.out.println();
+       				System.out.println("Currently in Shopping Cart:");
+       				System.out.println("Books: " + book);
+       				System.out.println("Bookmarks: " + bookmarks);
+       				System.out.println("Paintings: " + paintings);
+       				System.out.printf("Subtotal spent $%.2f\n", subtotal);
+       				System.out.printf("Total spent $%.2f\n", total);
+       				System.out.println();
+       				break; 
+    			
+    			//checkout and exit if no one else is in line	
+    			case 5:
+    				
+    				//checks for discount
+    				if (customer%3 == 0)
+    				{
+    					DISCOUNT = .1 * (subtotal * SALESTAX);
+    				}
+    				else
+    				{
+    					DISCOUNT = 0 * (subtotal * SALESTAX);
+    				}
+    				
+    				//shows checkout receipt
+    				System.out.printf(book + " Book(s): $%4.2f\n", bookTotal);
+       				System.out.printf(bookmarks + " Bookmark(s): $%4.2f\n", bookmarkTotal);
+       				System.out.printf(paintings + " Painting(s): $%4.2f\n", paintingTotal);
+       				System.out.printf("Subtotal before tax $%.2f\n", subtotal);
+       				System.out.printf("Discount -$%.2f\n", DISCOUNT);
+       				total = subtotal * SALESTAX - DISCOUNT;
+       				System.out.printf("Total after $%.2f\n", total);
+       				System.out.println("Customer #" + customer);
+       				System.out.print("Cash Tendered. $");
+       				double tender = scanner.nextDouble();
+       				double change = tender - total;
+       				System.out.printf("Change. $%.2f\n",  change);
+       				
+       				System.out.print("More customers in line? (1 = Yes, 2 = No) ");
+					answer = scanner.nextInt();
+					
+					//check for new customer, updates customer number, and resets till
+					if (answer != 2)
+       				{
+						customer++;
+						book = 0;
+						bookmarks = 0;
+						paintings = 0;
+						total = 0;
+						subtotal = 0;
+						bookTotal = 0;
+						bookmarkTotal = 0;
+						paintingTotal = 0;
+						break;
+       				}
+    				else
+    				{
+       					answer = 2;
+       					break;
+       				}
+    				
+    				//another error check of the menu
+    				default :
+    				System.out.println();
+    					System.out.println("You must press a number between 1 and 5!");
+						System.out.println();
+				}
+		}
+		
+		//message confirming exit
+		System.out.println("Goodbye.");
+	}
+}
